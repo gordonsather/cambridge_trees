@@ -1,0 +1,16 @@
+# Spatially join: classify trees inside parks
+trees_in_parks <- st_join(trees_geo, parks_geo, join = st_within, left = FALSE)
+trees_outside_parks <- trees_geo()[!trees_geo$geometry %in% trees_in_parks$geometry, ]
+# Build leaflet map
+leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+# Add all parks
+  addPolygons(
+    data = parks_geo,
+    fillColor = "lightblue",
+    fillOpacity = 0.3,
+    color = "blue",
+    weight = 1,
+    label = ~NAME,
+    group = "Parks"
+  ) %>%
