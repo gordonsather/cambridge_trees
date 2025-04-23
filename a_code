@@ -1,0 +1,19 @@
+install.packages(c("sf", "leaflet", "dplyr"))
+library(sf)
+library(leaflet)
+library(dplyr)
+tree_points <- read.csv("your_csv.csv")
+# Convert to sf object assuming coordinates are in 
+longitude/latitude (WGS84)
+trees_sf <- st_as_sf(tree_points, coords = c("Longitude", 
+"Latitude"), crs = 4326)
+# Transform for consistency (technically already in 4326, but 
+this is here if you change CRS later)
+trees_geo <- st_transform(treess_sf, 4326)
+# Load and transform parks data (replace with your actual 
+file path)
+parks <- st_read("your_filepath_RECREATION.shp")
+parks_geo <- st_transform(parks, 4326)
+# Make sure geometries are valid
+trees_geo <- st_make_valid(trees_geo)
+parks_geo <- st_make_valid(parks_geo)
